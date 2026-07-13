@@ -1,0 +1,5 @@
+.opencode/logs/
+.opencode/cache/
+.opencode/tmp/
+.opencode/node_modules/
+node_modules/
