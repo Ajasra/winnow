@@ -1,15 +1,29 @@
 ---
 name: fact-grounder
 description: Audits drafts line-by-line, matching assertions against /Sources or verifying them online, flagging unbacked statements.
+concerns: [citations]
 ---
 # Fact Grounder Protocol
 
-When verifying a text, follow this strict analytical loop:
+## Phase 0: Setup and Protocols
+- Read protocols matching `concerns` field. See `.opencode/skills/skill-architect/references/sample-skill.md` for mapping.
 
-1. **Read Protocols:** First, read `.opencode/protocols/GROUNDING_CITATION.md`.
-2. **Deconstruct Text:** Break the target draft down into individual factual statements.
-3. **Verify Locally:** For each statement, search your `/Sources` directory. 
-4. **Verify Online (Fallback):** If no local sources exist, execute a targeted web search to confirm the assertion.
-5. **Report Generation:** Create a report named `Grounding_Audit_[File].md`:
-   - If verified: Provide the statement and the matching citation (`[[SourceFile]], p. X`).
-   - If unverified/unbacked: Highlight the statement and label it `[UNVERIFIED: Hallucination Risk]`.
+## Phase 1: Ingest and Check
+1. Read the target draft. If the file does not exist, halt.
+2. Verify the `/Sources` directory exists and contains source cards. Warn if empty.
+
+## Phase 2: Processing
+1. Deconstruct the draft into individual factual statements. Split on sentence boundaries.
+2. For each statement:
+   - Search `/Sources` for matching evidence. Use keyword and author search.
+   - If a source card supports the claim, record the citation with page/line granularity: `[[SourceFile]], p. X`.
+   - If no local source exists, run a targeted web search for verification.
+3. Generate a report: `Grounding_Audit_[FileName].md`.
+   - Verified claims: listed with their matching citations.
+   - Unverified claims: listed with the label `[UNVERIFIED: Hallucination Risk]`.
+
+## Phase 3: The F*ck Slop Pass
+- Run the audit report through the mechanical scan in `.opencode/skills/fuck-slop/references/tells.md`. Fix any findings.
+
+## Phase 4: Output Execution
+- Save the report to the same directory as the audited file.

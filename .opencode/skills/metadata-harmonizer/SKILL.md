@@ -3,13 +3,33 @@ name: metadata-harmonizer
 description: Parses raw files, extracts date, authors, and keywords, and formats/appends standard Obsidian YAML frontmatter.
 ---
 # Metadata Harmonizer Protocol
-1. Read the target markdown file.
-2. Extract: Document Type (Meeting, Concept, Draft, Source), Creation Date, Key Authors, and 3-5 high-level Tags.
-3. Construct a standard YAML block at the top of the note:
+
+## Phase 0: Setup and Protocols
+- No protocols required.
+
+## Phase 1: Ingest and Check
+1. Read the target file. If it does not exist, halt.
+2. Check if the file already has YAML frontmatter (opening `---` block). If present, note existing fields to avoid overwriting user data.
+
+## Phase 2: Processing
+1. Extract four metadata fields from the file body and filename:
+   - **type**: `Meeting`, `Concept`, `Draft`, or `Source`.
+   - **created**: `YYYY-MM-DD` from file creation date or text content.
+   - **authors**: list of author names found in the text.
+   - **tags**: 3–5 high-level topic tags.
+2. Build a YAML frontmatter block:
+   ```yaml
    ---
-   type: [Document Type]
+   type: [value]
    created: YYYY-MM-DD
-   authors: [Author List]
-   tags: [Tag List]
+   authors: [list]
+   tags: [list]
    ---
-4. Write this header cleanly to the file without altering the body text.
+   ```
+3. If frontmatter already exists, merge new fields into the existing block. Do not delete existing fields.
+
+## Phase 3: The F*ck Slop Pass
+- N/A — this skill writes structured metadata only, not prose.
+
+## Phase 4: Output Execution
+- Prepend the YAML block to the target file. Preserve all body text unchanged.

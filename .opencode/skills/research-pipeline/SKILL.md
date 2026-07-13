@@ -1,23 +1,38 @@
 ---
 name: research-pipeline
-description: Coordinates the entire ingestion, parsing, shattering, auditing, and review process for any new paper or literature.
+description: Coordinates ingestion, parsing, shattering, auditing, and review for any new paper or literature.
+concerns: [prose, citations]
 ---
 # Research Pipeline Coordinator Protocol
 
-When a user provides a new research paper (PDF, text, or arXiv ID) and asks to "process," "ingest," or "pipeline" it, you must autonomously route the task through the following state machine:
+## Phase 0: Setup and Protocols
+- Read protocols matching `concerns` field. See `.opencode/skills/skill-architect/references/sample-skill.md` for mapping.
 
-### State 1: Ingestion
-- If the input is an arXiv ID or keyword, execute the `arxiv_puller` tool.
-- If the input is a local PDF, execute the `pdf_to_markdown` tool to convert it to an `.md` file in the `Inbox/` folder.
+## Phase 1: Ingest and Check
+1. Identify the input: arXiv ID, keyword query, local PDF path, or raw text. Halt if none provided.
+2. If arXiv ID or keyword: execute `arxiv_puller` tool to fetch the paper.
+3. If local PDF: execute `pdf_to_markdown` tool. Output to `Inbox/` folder.
+4. If raw text or existing `.md`: treat as already ingested (skip to Phase 2).
 
-### State 2: Atomization
-- Once the markdown file is created, immediately invoke the `atomic-shatterer` skill.
-- Confirm that the monolithic file has been broken into individual concept cards and properly inter-linked.
+## Phase 2: Processing (State Machine)
 
-### State 3: Auditing
-- Run the `epistemic-auditor` skill.
-- Compare the new atomic cards against the rest of the vault (especially notes in `/Sources` and `/Drafts`) to identify any logical contradictions or gaps.
+### State 1: Atomization
+- Invoke the `atomic-shatterer` skill on the ingested markdown file.
+- Confirm the monolithic file is broken into inter-linked concept cards.
 
-### State 4: Review
-- If the user has an active draft paper in `Drafts/`, apply the `socratic-reviewer` skill to test the draft against these newly integrated concepts.
-- Write a final summary of actions taken and files created.
+### State 2: Auditing
+- Invoke the `epistemic-auditor` skill on the new atomic cards.
+- Cross-check against existing vault content in `/Sources` and `/Drafts`.
+
+### State 3: Review
+- If the user has an active draft in `Drafts/`, invoke the `socratic-reviewer` skill.
+- Test the draft against newly integrated concepts.
+
+### State 4: Summary
+- Compile a summary of all files created, skills invoked, and findings. Write to `Sources/Pipeline_Summary_[PaperName].md`.
+
+## Phase 3: The F*ck Slop Pass
+- Run the final summary through the mechanical scan in `.opencode/skills/fuck-slop/references/tells.md`. Fix any findings.
+
+## Phase 4: Output Execution
+- All sub-skill outputs save to their default paths. The pipeline summary saves to `Sources/Pipeline_Summary_[PaperName].md`.
