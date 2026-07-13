@@ -7,6 +7,7 @@ concerns: [prose]
 
 ## Phase 0: Setup and Protocols
 - Read protocols matching `concerns` field. See `.opencode/skills/skill-architect/references/sample-skill.md` for mapping.
+- **Git safety**: The vault is tracked by git. Before modifying any file, stage and commit with message `pre-anti-slop: [[TargetFile]]`. If an edit is destructive, restore with `git checkout -- <file>`.
 
 ## Phase 1: Ingest and Check
 1. Read the target file. If the file does not exist, halt and report the missing path.

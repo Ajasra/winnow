@@ -13,6 +13,7 @@ concerns: [prose, citations, collaboration, obsidian-markup]
 ## Phase 0: Setup and Protocols
 - Read protocols matching `concerns` field. See `.opencode/skills/skill-architect/references/sample-skill.md` for mapping.
 - Mandatory: read `.opencode/protocols/OBSIDIAN_MARKUP.md` for markup parsing rules and output conventions.
+- **Git safety**: The vault is tracked by git. Before resolving comments, stage and commit with message `pre-comment-driver: [[DraftFile]]`. If comment resolution is destructive, restore with `git checkout -- <file>`.
 
 ## Phase 1: Ingest and Parse
 

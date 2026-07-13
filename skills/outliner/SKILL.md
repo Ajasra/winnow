@@ -12,6 +12,7 @@ concerns: [prose, citations]
 ## Phase 0: Setup and Protocols
 - Read protocols matching `concerns` field. See `.opencode/skills/skill-architect/references/sample-skill.md` for mapping.
 - Read `.opencode/protocols/DRAFT_STRUCTURE.md` for required file structure.
+- **Git safety**: The vault is tracked by git. Before generating outline/plan files, stage and commit with message `pre-outline: [[ProjectName]]`. If stubs are overwritten, restore with `git checkout -- drafts/<type>/<ProjectName>/`.
 
 ## Phase 1: Ingest and Check
 1. Identify the target project: type (`paper`/`essay`/`post`) and project name. Derive from context or ask the user.

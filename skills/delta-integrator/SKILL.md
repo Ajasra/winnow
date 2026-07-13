@@ -9,6 +9,7 @@ concerns: [prose, citations, collaboration]
 
 ## Phase 0: Setup and Protocols
 - Read protocols matching `concerns` field. See `.opencode/skills/skill-architect/references/sample-skill.md` for mapping.
+- **Git safety**: The vault is tracked by git. Before integrating feedback, stage and commit with message `pre-delta: [[DraftFile]]`. If revision is destructive, restore with `git checkout -- <file>`.
 
 ## Phase 1: Ingest and Check
 1. Locate the active draft file (e.g., `Drafts/Manuscript.md`). If it does not exist, halt.

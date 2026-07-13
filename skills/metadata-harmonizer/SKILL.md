@@ -5,7 +5,7 @@ description: Parses raw files, extracts date, authors, and keywords, and formats
 # Metadata Harmonizer Protocol
 
 ## Phase 0: Setup and Protocols
-- No protocols required.
+- **Git safety**: The vault is tracked by git. Before modifying any file, stage and commit with message `pre-harmonize: [[TargetFile]]`. If frontmatter injection corrupts a file, restore with `git checkout -- <file>`.
 
 ## Phase 1: Ingest and Check
 1. Read the target file. If it does not exist, halt.

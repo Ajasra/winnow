@@ -8,6 +8,7 @@ concerns: [citations]
 ## Phase 0: Setup and Protocols
 - Read protocols matching `concerns` field. See `.opencode/skills/skill-architect/references/sample-skill.md` for mapping.
 - Ensure target subdirectories exist: `Concepts/Terms/`, `Concepts/People/`, `Concepts/Claims/`. Create if missing.
+- **Git safety check**: Before processing, verify vault content is tracked by git. Stage and commit any uncommitted changes in `Concepts/`, `Sources/`, `Drafts/`, or `Inbox/` with message `pre-shatter: [[SourceFile]]`. If the vault is not yet a git repo, halt and instruct the user to initialize one. This ensures accidental overwrites can be reverted with `git checkout -- <file>`.
 
 ## Phase 1: Ingest and Check
 1. Read the target monolithic file. If the file does not exist or is empty, halt and report the error.
