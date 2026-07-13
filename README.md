@@ -1,8 +1,10 @@
 # Winnow
 
-**Winnow** is an AI research assistant that lives in your notes folder. Drop in a PDF, and it reads it, breaks it down into connected ideas, and helps you write, review, and organize — all on your own computer. No cloud uploads, no subscriptions.
+**Winnow** is the `.opencode/` configuration for an AI research assistant that lives inside your Obsidian vault. Drop a PDF into `Inbox/`, and it reads it, breaks it down into connected ideas, and helps you write, review, and organize — all on your own computer. No cloud uploads, no subscriptions.
 
 > The name comes from winnowing grain: separating what matters from the chaff.
+
+> **This repo is the `.opencode/` directory.** Clone it into your vault, not as a standalone project. See [Installation](#installation).
 
 ---
 
@@ -43,15 +45,25 @@ You don't need to be a programmer. If you can type a command in a terminal, you 
   powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
   ```
 
-### 2. Clone this vault
+### 2. Add Winnow to your vault
 
 ```powershell
-git clone https://github.com/yourusername/Winnow.git
+cd your-obsidian-vault
+git clone https://github.com/Ajasra/winnow.git .opencode
 ```
 
-### 3. Drop in a paper
+Winnow is the `.opencode/` directory inside your vault. It does **not** include vault content — your notes live alongside it in `Concepts/`, `Sources/`, `Drafts/`, and `Inbox/`.
 
-Save any PDF to the `Inbox\` folder. Run:
+### 3. Set up your vault
+
+Create the folders Winnow expects:
+```powershell
+mkdir Inbox, Sources, Drafts, Concepts/Terms, Concepts/People, Concepts/Claims
+```
+
+### 4. Drop in a paper
+
+Save any PDF to the `Inbox/` folder. Run:
 ```powershell
 opencode run --agent winnow "Process everything in Inbox/"
 ```
@@ -156,25 +168,31 @@ Three layers make this work:
 
 ## Directory structure
 
+This repo is the `.opencode/` directory. When cloned into your vault, the full layout looks like:
+
 ```
-Winnow/
-├── .opencode/                  # Agent configuration (don't touch unless customizing)
+your-obsidian-vault/
+├── .opencode/                  # This repo — Winnow configuration
 │   ├── opencode.json           # Defines the winnow agent and its tools
 │   ├── skills/                 # Markdown files that define each skill's behavior
-│   └── scripts/                # Python utilities (pdf_conv.py, arxiv_fetch.py)
+│   ├── protocols/              # Writing and markup conventions
+│   ├── scripts/                # Python utilities (pdf_conv.py, arxiv_fetch.py)
+│   ├── tools/                  # TypeScript tool definitions
+│   └── README.md
 ├── Inbox/                      # Drop PDFs here — Winnow watches this folder
 ├── Concepts/                   # Atomic notes extracted from sources
-│   ├── Terms/                   #   definitions, concepts, methods
-│   ├── People/                  #   authors, researchers, thinkers
-│   └── Claims/                  #   arguments, theses, findings
+│   ├── Terms/                  #   definitions, concepts, methods
+│   ├── People/                 #   authors, researchers, thinkers
+│   └── Claims/                 #   arguments, theses, findings
 ├── Sources/                    # Ingested papers and source files
 ├── Drafts/                     # Your writing, organized by type
 │   ├── paper/                  #   papers/<ProjectName>/ → outline, plan, chapters
 │   ├── essay/                  #   same structure for essays
 │   └── post/                   #   same structure for blog posts
-├── watch_inbox.ps1             # Background watcher daemon (optional)
-└── README.md
+└── .gitignore                  # Ignores .opencode/ (managed separately)
 ```
+
+> **Separation of concerns**: the vault content (`Concepts/`, `Sources/`, `Drafts/`, `Inbox/`) is tracked by **your vault's git repo**. The `.opencode/` directory is tracked by **this repo**. They are independent — update Winnow without touching your research.
 
 ---
 
@@ -200,11 +218,7 @@ Press the hotkey on any note and Winnow reviews it in place.
 
 ### Level 3: Background watcher
 
-Run the daemon once:
-```powershell
-.\watch_inbox.ps1
-```
-Now whenever you save a PDF to `Inbox\`, Winnow automatically converts it, shatters it into concept notes, and archives the original. Your Obsidian graph populates in the background while you keep working.
+Use a file watcher (e.g., PowerShell `FileSystemWatcher`) to monitor `Inbox/` for new PDFs and invoke Winnow automatically. Your Obsidian graph populates in the background while you keep working.
 
 ---
 
@@ -256,11 +270,17 @@ Your `.opencode/opencode.json` should look like this:
 
 Winnow writes to your real files. Protect yourself:
 
-- **Use Git.** Initialize the vault as a repo. If something goes wrong:
+- **Use Git.** Initialize your vault as a separate git repo (tracking `Concepts/`, `Sources/`, `Drafts/`, `Inbox/`). Before running any file-modifying skill, commit:
   ```powershell
-  git checkout .
+  git add -A && git commit -m "pre-shatter"
   ```
-  Everything reverts instantly.
+  If something goes wrong:
+  ```powershell
+  git checkout -- path/to/file.md
+  ```
+  Everything reverts instantly. The `.opencode/` directory itself is tracked by this repo and ignored by your vault's `.gitignore`.
+
+- **Every file-modifying skill requires a git safety check** in Phase 0: commit before modifying, so you can always roll back.
 
 - **Work on copies.** Before running an aggressive skill like `socratic-reviewer`, duplicate your draft.
 
@@ -273,25 +293,29 @@ Winnow writes to your real files. Protect yourself:
 Winnow is **decoupled**: the AI engine (OpenCode) does not live inside Obsidian. They communicate only through the filesystem.
 
 ```
-┌─────────────────────────────────────────┐
-│              Your hard drive             │
-│                                         │
-│  Inbox\  ──→  Winnow Agent  ──→  Vault  │
-│  (PDFs)       (OpenCode)        (.md)   │
-│                 │                        │
-│                 ├── uv run pdf_conv.py   │
-│                 ├── uv run arxiv_fetch   │
-│                 └── AI model (cloud or   │
-│                     local via Ollama)    │
-└─────────────────────────────────────────┘
+┌──────────────────────────────────────────────────┐
+│                 Your Obsidian vault               │
+│                                                  │
+│  Inbox/  ──→  Winnow (.opencode/)  ──→  vault    │
+│  (PDFs)       (OpenCode agent)        (.md files) │
+│                    │                              │
+│                    ├── uv run pdf_conv.py         │
+│                    ├── uv run arxiv_fetch         │
+│                    └── AI model (cloud or         │
+│                        local via Ollama)          │
+├──────────────────────────────────────────────────┤
+│  Concepts/    Sources/    Drafts/                 │
+│  (your research notes, tracked by vault git)      │
+└──────────────────────────────────────────────────┘
 ```
 
-1. **Data** — your Obsidian vault. Plain `.md` files, fully portable. No lock-in.
-2. **Compute** — OpenCode with the `winnow` agent. Talks to cloud APIs (DeepSeek, OpenAI) or local models (Ollama). You choose.
-3. **Dependencies** — managed by `uv` with PEP 723 inline metadata. Python packages install on first run, no global environment needed.
+1. **Vault content** — your research (`Concepts/`, `Sources/`, `Drafts/`, `Inbox/`). Plain `.md` files, tracked by your vault's git. Fully portable. No lock-in.
+2. **Winnow config** — this repo (`.opencode/`). Agent definition, skills, protocols, and scripts. Tracked independently.
+3. **Compute** — OpenCode with the `winnow` agent. Talks to cloud APIs (DeepSeek, OpenAI) or local models (Ollama). You choose.
+4. **Dependencies** — managed by `uv` with PEP 723 inline metadata. Python packages install on first run, no global environment needed.
 
 This design means:
 - Your research is never sent to a third-party database
 - You can switch AI providers without changing your notes
 - Everything works offline if you use a local model
-- Backups are just `git push`
+- Update Winnow (`git pull` in `.opencode/`) without touching your vault history
