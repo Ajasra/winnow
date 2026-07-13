@@ -7,7 +7,7 @@ concerns: [citations]
 
 ## Phase 0: Setup and Protocols
 - Read protocols matching `concerns` field. See `.opencode/skills/skill-architect/references/sample-skill.md` for mapping.
-- Ensure target subdirectories exist: `Sources/Terms/`, `Sources/People/`, `Sources/Claims/`. Create if missing.
+- Ensure target subdirectories exist: `Concepts/Terms/`, `Concepts/People/`, `Concepts/Claims/`. Create if missing.
 
 ## Phase 1: Ingest and Check
 1. Read the target monolithic file. If the file does not exist or is empty, halt and report the error.
@@ -20,13 +20,13 @@ concerns: [citations]
 ## Phase 2: Processing
 1. Extract **ALL** identified concepts from Phase 1 step 3. No maximum. No picking favorites. Every term, person, and claim that has conceptual weight gets an atomic note.
 
-   | Category | Folder          | when to use                                    |
-   |----------|-----------------|------------------------------------------------|
-   | term     | Sources/Terms/  | definitions, jargon, named concepts, methods   |
-   | person   | Sources/People/ | authors, researchers, schools of thought       |
-   | claim    | Sources/Claims/ | specific arguments, theses, hypotheses, findings |
+   | Category | Folder           | when to use                                    |
+   |----------|------------------|------------------------------------------------|
+   | term     | Concepts/Terms/  | definitions, jargon, named concepts, methods   |
+   | person   | Concepts/People/ | authors, researchers, schools of thought       |
+   | claim    | Concepts/Claims/ | specific arguments, theses, hypotheses, findings |
 
-2. For each concept, create a new file at the classified folder path. Filename: lowercase, hyphenated, no prefix. Example: `Sources/Terms/autopoiesis.md`, not `Atomic - Autopoiesis.md`.
+2. For each concept, create a new file at the classified folder path. Filename: lowercase, hyphenated, no prefix. Example: `Concepts/Terms/autopoiesis.md`, not `Atomic - Autopoiesis.md`.
 3. Write a ≤150-word synthesis of the concept. Use dense, factual prose.
 4. Add YAML frontmatter at the top of each atomic note:
 
@@ -50,5 +50,5 @@ tags: [contextual-tag-1, contextual-tag-2]
 - Each atomic note's synthesis text must pass a mechanical scan against `.opencode/skills/fuck-slop/references/tells.md`. Fix any findings before saving.
 
 ## Phase 4: Output Execution
-- Save atomic notes to `Sources/Terms/`, `Sources/People/`, or `Sources/Claims/` per classification.
+- Save atomic notes to `Concepts/Terms/`, `Concepts/People/`, or `Concepts/Claims/` per classification.
 - Save the modified original file in place.

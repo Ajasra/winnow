@@ -66,7 +66,7 @@ Winnow converts the PDF to Markdown, extracts key concepts into separate notes, 
 Drag a PDF into `Inbox\`. Winnow converts it to readable Markdown and creates a **literature card** with title, authors, date, abstract, keywords, and tagged themes.
 
 ### Break down ideas
-The **atomic-shatterer** skill takes a long paper and splits every concept into individual notes. Each note is classified as a **term**, **person**, or **claim** and routed to `Sources/Terms/`, `Sources/People/`, or `Sources/Claims/`. One 30-page paper becomes 20-30 small, reusable notes, each linked back to the source.
+The **atomic-shatterer** skill takes a long paper and splits every concept into individual notes. Each note is classified as a **term**, **person**, or **claim** and routed to `Concepts/Terms/`, `Concepts/People/`, or `Concepts/Claims/`. One 30-page paper becomes 20-30 small, reusable notes, each linked back to the source.
 
 ### Review your writing
 Run the **socratic-reviewer** on a draft. It reads your chapter and returns a hard critique: weak arguments, missing evidence, unclear logic. Like a peer reviewer, but instant.
@@ -163,11 +163,11 @@ Winnow/
 │   ├── skills/                 # Markdown files that define each skill's behavior
 │   └── scripts/                # Python utilities (pdf_conv.py, arxiv_fetch.py)
 ├── Inbox/                      # Drop PDFs here — Winnow watches this folder
-├── Sources/                    # Processed papers and atomic notes
+├── Concepts/                   # Atomic notes extracted from sources
 │   ├── Terms/                   #   definitions, concepts, methods
 │   ├── People/                  #   authors, researchers, thinkers
-│   ├── Claims/                  #   arguments, theses, findings
-│   └── *.md                     #   source files with Table of Atomic Contents
+│   └── Claims/                  #   arguments, theses, findings
+├── Sources/                    # Ingested papers and source files
 ├── Drafts/                     # Your writing, organized by type
 │   ├── paper/                  #   papers/<ProjectName>/ → outline, plan, chapters
 │   ├── essay/                  #   same structure for essays

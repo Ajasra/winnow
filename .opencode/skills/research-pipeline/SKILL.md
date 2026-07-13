@@ -18,7 +18,7 @@ concerns: [prose, citations]
 
 ### State 1: Atomization
 - Invoke the `atomic-shatterer` skill on the ingested markdown file.
-- Confirm the monolithic file is broken into inter-linked concept cards routed to `Sources/Terms/`, `Sources/People/`, and `Sources/Claims/`.
+- Confirm the monolithic file is broken into inter-linked concept cards routed to `Concepts/Terms/`, `Concepts/People/`, and `Concepts/Claims/`.
 
 ### State 2: Auditing
 - Invoke the `epistemic-auditor` skill on the new atomic cards.
