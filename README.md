@@ -1,76 +1,216 @@
 # Winnow
 
-**Winnow** is a local-first, decoupled AI research and synthesis engine designed to run inside an [Obsidian](https://obsidian.md/) markdown note vault. By combining the visual rendering capabilities of Obsidian with the programmatic agent loop of [OpenCode](https://opencode.ai/), Winnow automates the entire academic workflow—from raw paper ingestion to peer review—without cluttering your writing workspace.
+**Winnow** is an AI research assistant that lives in your notes folder. Drop in a PDF, and it reads it, breaks it down into connected ideas, and helps you write, review, and organize — all on your own computer. No cloud uploads, no subscriptions.
 
-The name **Winnow** originates from the traditional process of sifting grain to separate the wheat from the chaff. Similarly, this system filters your raw literature dumps to extract core entities, structural linkages, and synthesis.
-
----
-
-## 1. System Architecture
-
-Unlike traditional monolithic AI assistants that require uploading your private research notes to cloud-hosted databases, Winnow utilizes a **decoupled, local-first system design**:
-
-```
-[ Raw Ingest ] ──> (D:\Winnow\Inbox\)
-                        │
-                        ▼
-  [ OpenCode / Winnow ] (Headless Backend Agent Engine)
-   ├── Extracted Entities, Lit-Cards, and Metadata
-   └── Programmatic Python Scripts via `uv run`
-                        │
-                        ▼
-    [ Obsidian Vault ] (Local File Watcher)
-   ├── GUI, Markdown rendering, LaTeX support
-   └── Native Graph View (Dynamic Connection Mapping)
-```
-
-1. **The Core Storage (Data Layer):** Your Obsidian Vault. Everything is stored locally on your hard drive as plain `.md` and `.txt` files. 
-2. **The Execution Engine (Compute Layer):** **OpenCode**, configured with a custom non-coding `"winnow"` agent. This agent runs locally or connects to highly cost-efficient cloud APIs (like DeepSeek) or local offline runners (via Ollama).
-3. **The Dependency Pipeline (Virtualization Layer):** Managed dynamically on-the-fly by **`uv`** (using PEP 723 inline script metadata). No manual system-wide Python environment setup is required.
+> The name comes from winnowing grain: separating what matters from the chaff.
 
 ---
 
-## 2. Directory Structure
+## What is Winnow?
 
-Your project directory (`D:\Winnow`) is organized with strict separation between system configuration and research content:
+Winnow connects two tools you may already use:
 
-```text
-D:\Winnow/
-├── .opencode/                  # OpenCode Agent Core Configuration
-│   ├── opencode.json           # Unified schema validator for the Winnow agent
-│   ├── skills/                 # Declarative Markdown-based agent skills
-│   │   ├── epistemic-auditor.md
-│   │   ├── atomic-shatterer.md
-│   │   └── socratic-reviewer.md
-│   ├── tools/                  # TypeScript wrappers for execution tools
-│   │   ├── pdf_to_markdown.ts
-│   │   └── arxiv_puller.ts
-│   └── scripts/                # Python processing scripts (no-dependency)
-│       ├── pdf_conv.py
-│       └── arxiv_fetch.py
-├── Inbox/                      # Target directory for raw PDFs (Ingestion)
-├── Sources/                    # Structured Literature Cards / formatted papers
-├── Drafts/                     # Active manuscripts, chapters, and notes
-├── watch_inbox.ps1             # Windows PowerShell Folder Watcher daemon
-└── README.md                   # System Documentation
+- **[Obsidian](https://obsidian.md/)** — a note-taking app that works on plain Markdown files. It gives you a visual editor, a graph of how ideas connect, and full control over your notes.
+- **[OpenCode](https://opencode.ai/)** — a programmable AI agent that can read, write, search, and reason about files on your computer.
+
+Together, they turn your notes folder into an automated research pipeline. Winnow watches a folder for new papers, converts them, extracts key ideas, links them across your notes, and can even review your drafts like a journal referee.
+
+Everything stays local. Your research never leaves your hard drive.
+
+---
+
+## Who is this for?
+
+| You are... | Winnow helps you... |
+|---|---|
+| A researcher or PhD student | Process papers, build literature cards, cross-reference claims |
+| A writer or journalist | Organize sources, fact-check drafts, map arguments |
+| A curious learner | Read and synthesize complex material into connected notes |
+| A tinkerer | Automate markdown workflows with AI scripts |
+
+You don't need to be a programmer. If you can type a command in a terminal, you can use Winnow.
+
+---
+
+## Quick start
+
+### 1. Install the pieces
+
+- **[Obsidian](https://obsidian.md/)** (free)
+- **[OpenCode CLI](https://opencode.ai/)** (the AI engine)
+- **[uv](https://docs.astral.sh/uv/)** — run this in PowerShell:
+  ```powershell
+  powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+  ```
+
+### 2. Clone this vault
+
+```powershell
+git clone https://github.com/yourusername/Winnow.git
+```
+
+### 3. Drop in a paper
+
+Save any PDF to the `Inbox\` folder. Run:
+```powershell
+opencode run --agent winnow "Process everything in Inbox/"
+```
+
+Winnow converts the PDF to Markdown, extracts key concepts into separate notes, and links them together. Open Obsidian and you'll see the new notes in your graph.
+
+---
+
+## What can Winnow do?
+
+### Ingest papers
+Drag a PDF into `Inbox\`. Winnow converts it to readable Markdown and creates a **literature card** with title, authors, date, abstract, keywords, and tagged themes.
+
+### Break down ideas
+The **atomic-shatterer** skill takes a long paper and splits it into individual concept notes, each linked back to the source. One 30-page paper becomes 20-30 small, reusable notes.
+
+### Review your writing
+Run the **socratic-reviewer** on a draft. It reads your chapter and returns a hard critique: weak arguments, missing evidence, unclear logic. Like a peer reviewer, but instant.
+
+### Audit your sources
+The **epistemic-auditor** scans your notes and drafts, flagging claims that lack citations, contradictions between sources, and logical gaps.
+
+### Build a knowledge graph
+Because every note links to others with `[[wikilinks]]`, Obsidian's **Graph View** shows you how ideas connect. You can see clusters, orphan concepts, and unexpected bridges between topics.
+
+### Pull papers from arXiv
+```powershell
+opencode run --agent winnow "Pull papers about 'transformer attention mechanisms' from arXiv"
+```
+Winnow fetches the paper metadata and creates a ready-to-use literature card.
+
+---
+
+## Skills & Tools
+
+Winnow has two kinds of capabilities: **skills** (AI prompts that guide analysis) and **tools** (scripts that do concrete tasks).
+
+### Skills
+
+| Skill | What it does | Use when... |
+|---|---|---|
+| `atomic-shatterer` | Breaks a long text into individual concept notes with `[[links]]` | You've just ingested a paper and want to mine it for ideas |
+| `epistemic-auditor` | Scans drafts for unsupported claims, contradictions, gaps | You're about to submit and want to catch weak spots |
+| `socratic-reviewer` | Peer-reviews a draft with aggressive, constructive criticism | You need an outside perspective on your argument |
+| `literature-synthesizer` | Weaves multiple source notes into a thematic mini-review | You're writing a lit review or introduction |
+| `brain-dump-distiller` | Converts messy transcripts or raw notes into structured Obsidian files | You recorded a lecture or brainstormed ideas |
+| `comparative-matrix` | Builds a comparison table from multiple source files | You're surveying methods, frameworks, or studies |
+| `fact-grounder` | Checks every assertion in a draft against your sources | You want to verify nothing was invented or misremembered |
+| `mermaid-mapper` | Generates a Mermaid.js flowchart of dependencies or steps | You need a visual map of how concepts relate |
+| `popular-translator` | Rewrites academic text into clear, engaging language | You're sharing your work with a broader audience |
+| `metadata-harmonizer` | Parses raw files and adds standardized YAML frontmatter | Your notes have inconsistent or missing metadata |
+| `fuck-slop` | Strips AI-generated filler and polishes prose | You used AI to draft text and want it to sound human |
+
+### Tools
+
+| Tool | What it does |
+|---|---|
+| `pdf_to_markdown` | Converts PDFs to clean Markdown using `pypdf` (auto-installed via `uv`) |
+| `arxiv_puller` | Queries the arXiv API and generates Obsidian literature cards with YAML metadata |
+
+---
+
+## How it works
+
+Winnow follows a simple pipeline:
+
+```
+You drop a PDF    →    Inbox\ picks it up
+                              │
+                              ▼
+                     Winnow converts it
+                     (pdf → markdown)
+                              │
+                              ▼
+                     Atomic Shatterer
+                     (paper → concept notes)
+                              │
+                              ▼
+                     Notes land in Sources\
+                     with YAML metadata and [[links]]
+                              │
+                              ▼
+                     Obsidian shows everything
+                     in Graph View, search, backlinks
+```
+
+Three layers make this work:
+
+1. **Storage layer** — your Obsidian vault. Everything is plain `.md` files on your hard drive.
+2. **Processing layer** — OpenCode running the `winnow` agent. It can use cloud AI (DeepSeek, OpenAI) or a local model (Ollama).
+3. **Tool layer** — Python scripts run through `uv`, which installs dependencies on the fly. No manual setup.
+
+---
+
+## Directory structure
+
+```
+Winnow/
+├── .opencode/                  # Agent configuration (don't touch unless customizing)
+│   ├── opencode.json           # Defines the winnow agent and its tools
+│   ├── skills/                 # Markdown files that define each skill's behavior
+│   └── scripts/                # Python utilities (pdf_conv.py, arxiv_fetch.py)
+├── Inbox/                      # Drop PDFs here — Winnow watches this folder
+├── Sources/                    # Processed papers and literature cards
+├── Drafts/                     # Your writing: chapters, articles, notes
+├── watch_inbox.ps1             # Background watcher daemon (optional)
+└── README.md
 ```
 
 ---
 
-## 3. Installation & Setup
+## Automation
+
+You control how much Winnow does automatically.
+
+### Level 1: Manual commands
+
+Type what you want done:
+```powershell
+opencode run --agent winnow "Review Drafts/Chapter1.md for logical gaps"
+opencode run --agent winnow "Extract concepts from Sources/smith2024.md"
+```
+
+### Level 2: Obsidian hotkeys
+
+Install the **Shell Commands** plugin in Obsidian. Bind a hotkey (e.g. `Ctrl+Alt+R`) to:
+```bash
+opencode run --agent winnow "Review this file: {{file_path}}"
+```
+Press the hotkey on any note and Winnow reviews it in place.
+
+### Level 3: Background watcher
+
+Run the daemon once:
+```powershell
+.\watch_inbox.ps1
+```
+Now whenever you save a PDF to `Inbox\`, Winnow automatically converts it, shatters it into concept notes, and archives the original. Your Obsidian graph populates in the background while you keep working.
+
+---
+
+## Installation
 
 ### Prerequisites
-Ensure your local machine has the following tools installed and added to your system `PATH`:
 
-1.  **Node.js / npm:** Required for compiling OpenCode TS tools.
-2.  **uv:** Modern Python package manager. Run `winget install astral-sh.uv` or execute:
-    ```powershell
-    powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
-    ```
-3.  **OpenCode CLI:** The core agent host engine.
+- **Node.js** — for OpenCode
+- **uv** — Python package manager:
+  ```powershell
+  winget install astral-sh.uv
+  ```
+  Or:
+  ```powershell
+  powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+  ```
+- **OpenCode CLI** — [opencode.ai](https://opencode.ai/)
 
 ### Configuration
-Update `.opencode/opencode.json` with the following schema:
+
+Your `.opencode/opencode.json` should look like this:
 
 ```json
 {
@@ -78,7 +218,7 @@ Update `.opencode/opencode.json` with the following schema:
   "agent": {
     "winnow": {
       "name": "Winnow",
-      "description": "Specialized agent for raw text parsing, academic synthesis, and semantic link generation.",
+      "description": "Research agent for parsing, synthesis, and semantic linking inside Obsidian vaults.",
       "systemPrompt": "You are a professional academic research and writing agent operating inside an Obsidian markdown vault. Your primary function is content synthesis, structural organization, and semantic link generation. Use Obsidian Wikilinks [[LinkName]] for entities, cross-references, and glossary terms. Always ensure file modifications are idempotent.",
       "tools": {
         "read": true,
@@ -97,53 +237,46 @@ Update `.opencode/opencode.json` with the following schema:
 
 ---
 
-## 4. Winnow's Skills & Custom Tools
+## Safety
 
-Winnow has access to declarative cognitive **Skills** and executable local **Tools**:
+Winnow writes to your real files. Protect yourself:
 
-### Declarative Skills (`.opencode/skills/`)
-*   **`atomic-shatterer`:** Takes a monolithic text file (such as a raw PDF conversion) and extracts distinct core concepts into individual atomic notes, linking them back to the source.
-*   **`epistemic-auditor`:** Scans folders of drafts to ensure logical consistency, flags contradictions between source notes, and highlights assertions that lack citations.
-*   **`socratic-reviewer`:** Assumes the role of an aggressive academic reviewer to stress-test your hypotheses, identify weak arguments, and raise hard methodological questions.
+- **Use Git.** Initialize the vault as a repo. If something goes wrong:
+  ```powershell
+  git checkout .
+  ```
+  Everything reverts instantly.
 
-### Programmatic Tools (`.opencode/tools/` & `scripts/`)
-*   **`pdf_to_markdown`:** Calls `pdf_conv.py` using `uv run`. Dynamically installs `pypdf` via inline metadata [1.4.1], converts scientific PDFs, and sanitizes double line-breaks.
-*   **`arxiv_puller`:** Calls `arxiv_fetch.py` to query the public arXiv API using standard libraries. Automatically generates standardized Obsidian literature cards (Lit-Cards) with YAML front matter.
+- **Work on copies.** Before running an aggressive skill like `socratic-reviewer`, duplicate your draft.
 
----
-
-## 5. Automation Pipelines
-
-You can operate Winnow at three levels of automation based on your workflow needs:
-
-### Level 1: Non-Interactive CLI
-Run quick processing instructions headlessly:
-```powershell
-opencode run --agent winnow "Apply socratic-reviewer to Drafts/Chapter1.md"
-```
-
-### Level 2: Inside Obsidian (Hotkeys & Command Palette)
-Install the **Shell Commands** community plugin in Obsidian. Configure a hotkey (e.g., `Ctrl+Alt+R`) to run:
-```bash
-opencode run --agent winnow "Apply socratic-reviewer skill to '{{file_path}}'"
-```
-This lets you invoke Winnow and receive review notes directly inside your editor without leaving Obsidian.
-
-### Level 3: Zero-Click Background Watcher (`watch_inbox.ps1`)
-Run the PowerShell daemon in the background to monitor your `Inbox/` folder:
-```powershell
-.\watch_inbox.ps1
-```
-When you save a PDF to `D:\Winnow\Inbox\`, the daemon automatically catches it, instructs Winnow to convert it to markdown, applies the `atomic-shatterer` skill, and archives the raw PDF to your `Sources/` folder. Your Obsidian Graph View will automatically populate with linked concept nodes in the background.
+- **Review before publishing.** Winnow reduces busywork, but you are the final editor. Always read the output before submitting.
 
 ---
 
-## 6. Version Control & Safety Guidelines
+## Architecture (deep dive)
 
-Because Winnow executes modifications directly on your local file system, follow these engineering practices to maintain vault integrity:
+Winnow is **decoupled**: the AI engine (OpenCode) does not live inside Obsidian. They communicate only through the filesystem.
 
-*   **Initialize Git:** Ensure you run `git init` on your `D:\Winnow` directory before running automated loops. If an AI agent ever generates recursive links or messes up formatting, revert instantly with:
-    ```powershell
-    git checkout .
-    ```
-*   **Idempotency Checks:** When modifying skills, always instruct the agent that its changes must be idempotent (running the tool multiple times must never generate nested links like `[[[[Term]]]]`).
+```
+┌─────────────────────────────────────────┐
+│              Your hard drive             │
+│                                         │
+│  Inbox\  ──→  Winnow Agent  ──→  Vault  │
+│  (PDFs)       (OpenCode)        (.md)   │
+│                 │                        │
+│                 ├── uv run pdf_conv.py   │
+│                 ├── uv run arxiv_fetch   │
+│                 └── AI model (cloud or   │
+│                     local via Ollama)    │
+└─────────────────────────────────────────┘
+```
+
+1. **Data** — your Obsidian vault. Plain `.md` files, fully portable. No lock-in.
+2. **Compute** — OpenCode with the `winnow` agent. Talks to cloud APIs (DeepSeek, OpenAI) or local models (Ollama). You choose.
+3. **Dependencies** — managed by `uv` with PEP 723 inline metadata. Python packages install on first run, no global environment needed.
+
+This design means:
+- Your research is never sent to a third-party database
+- You can switch AI providers without changing your notes
+- Everything works offline if you use a local model
+- Backups are just `git push`
