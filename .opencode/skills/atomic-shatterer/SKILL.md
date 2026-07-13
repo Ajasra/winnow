@@ -7,22 +7,48 @@ concerns: [citations]
 
 ## Phase 0: Setup and Protocols
 - Read protocols matching `concerns` field. See `.opencode/skills/skill-architect/references/sample-skill.md` for mapping.
+- Ensure target subdirectories exist: `Sources/Terms/`, `Sources/People/`, `Sources/Claims/`. Create if missing.
 
 ## Phase 1: Ingest and Check
 1. Read the target monolithic file. If the file does not exist or is empty, halt and report the error.
 2. Verify the file is in the vault (`Drafts/`, `Sources/`, or `Inbox/`). Warn if it resides elsewhere.
+3. Identify every conceptually distinct item in the text. Parse the entire file for:
+   - **Terms**: definitions, jargon, named concepts, methods, frameworks, aesthetic principles (e.g., wabi-sabi, dissipative structures).
+   - **People**: authors, researchers, thinkers cited by name with substantive content (not a passing `(Smith, 2020)` citation with no elaboration).
+   - **Claims**: specific arguments, theses, hypotheses, findings with enough body to stand alone.
 
 ## Phase 2: Processing
-1. Extract 3–7 self-contained concepts from the text. Each concept must stand alone as a single claim, methodology, result, or definition.
-2. For each concept, create a new file: `Atomic - [Concept Name].md`.
+1. Extract **ALL** identified concepts from Phase 1 step 3. No maximum. No picking favorites. Every term, person, and claim that has conceptual weight gets an atomic note.
+
+   | Category | Folder          | when to use                                    |
+   |----------|-----------------|------------------------------------------------|
+   | term     | Sources/Terms/  | definitions, jargon, named concepts, methods   |
+   | person   | Sources/People/ | authors, researchers, schools of thought       |
+   | claim    | Sources/Claims/ | specific arguments, theses, hypotheses, findings |
+
+2. For each concept, create a new file at the classified folder path. Filename: lowercase, hyphenated, no prefix. Example: `Sources/Terms/autopoiesis.md`, not `Atomic - Autopoiesis.md`.
 3. Write a ≤150-word synthesis of the concept. Use dense, factual prose.
-4. Append a source block at the bottom of each atomic note: `Source: [[OriginalFile]]`.
+4. Add YAML frontmatter at the top of each atomic note:
+
+```yaml
+---
+type: [term|person|claim]
+created: YYYY-MM-DD
+source: "[[OriginalFile]]"
+tags: [contextual-tag-1, contextual-tag-2]
+---
+```
+   - `type` matches the category from step 1.
+   - `source` is a wikilink back to the original monolithic file.
+   - `tags` are 1–3 domain-specific keywords (not the type itself).
+
 5. Scan all atomic notes for conceptual overlap. Insert `[[Wikilink]]` between notes where concepts cross-reference.
-6. Modify the original monolithic file: prepend a `## Table of Atomic Contents` section with bulleted links to every atomic note.
+6. Modify the original monolithic file: prepend a `## Table of Atomic Contents` section with bulleted links to **every** extracted note, grouped by category (Terms, People, Claims). The ToC must be exhaustive.
+7. **Completeness verification**: Before finalizing, scan the source file a second time. Compare every named concept, person, and thesis against the extracted notes. If any were missed, extract them now. The atomic notes must account for everything of conceptual weight in the source.
 
 ## Phase 3: The F*ck Slop Pass
 - Each atomic note's synthesis text must pass a mechanical scan against `.opencode/skills/fuck-slop/references/tells.md`. Fix any findings before saving.
 
 ## Phase 4: Output Execution
-- Save atomic notes adjacent to the original file (same directory).
+- Save atomic notes to `Sources/Terms/`, `Sources/People/`, or `Sources/Claims/` per classification.
 - Save the modified original file in place.
