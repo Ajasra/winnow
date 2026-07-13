@@ -3,3 +3,8 @@
 .opencode/tmp/
 .opencode/node_modules/
 node_modules/
+
+.obsidian/
+
+
+Inbox/

@@ -40,3 +40,4 @@ Single source of truth. Add new protocols here; all skills resolve Phase 0 from 
 | `citations` | `.opencode/protocols/GROUNDING_CITATION.md` |
 | `collaboration` | `.opencode/protocols/COLLABORATION.md` |
 | `draft-structure` | `.opencode/protocols/DRAFT_STRUCTURE.md` |
+| `obsidian-markup` | `.opencode/protocols/OBSIDIAN_MARKUP.md` |

@@ -77,6 +77,9 @@ The **epistemic-auditor** scans your notes and drafts, flagging claims that lack
 ### Build a knowledge graph
 Because every note links to others with `[[wikilinks]]`, Obsidian's **Graph View** shows you how ideas connect. You can see clusters, orphan concepts, and unexpected bridges between topics.
 
+### Draft and write
+Say "start a paper about X" and Winnow scaffolds your project: `drafts/paper/your-topic/` with an outline, a writing plan, and one file per chapter. The **drafting-pipeline** walks through scaffold → outline → draft → review → revise. Each chapter is grounded in your `/Sources` cards and checked for AI slop.
+
 ### Pull papers from arXiv
 ```powershell
 opencode run --agent winnow "Pull papers about 'transformer attention mechanisms' from arXiv"
@@ -104,6 +107,11 @@ Winnow has two kinds of capabilities: **skills** (AI prompts that guide analysis
 | `popular-translator` | Rewrites academic text into clear, engaging language | You're sharing your work with a broader audience |
 | `metadata-harmonizer` | Parses raw files and adds standardized YAML frontmatter | Your notes have inconsistent or missing metadata |
 | `fuck-slop` | Strips AI-generated filler and polishes prose | You used AI to draft text and want it to sound human |
+| `drafting-pipeline` | Orchestrates the full writing lifecycle: scaffold, outline, draft, review, revise | You're starting a new paper, essay, or post |
+| `outliner` | Generates a structured outline and writing plan from sources + user input | You need a chapter-level roadmap before drafting |
+| `chapter-writer` | Drafts one chapter file, grounding every claim in `/Sources` | You're ready to write chapter N from the outline |
+| `delta-integrator` | Revises a draft by systematically applying review feedback | You have review notes and need to update the manuscript |
+| `research-pipeline` | Coordinates ingestion, atomization, auditing, and review for new papers | You just dropped a PDF and want the full treatment |
 
 ### Tools
 
@@ -156,7 +164,10 @@ Winnow/
 │   └── scripts/                # Python utilities (pdf_conv.py, arxiv_fetch.py)
 ├── Inbox/                      # Drop PDFs here — Winnow watches this folder
 ├── Sources/                    # Processed papers and literature cards
-├── Drafts/                     # Your writing: chapters, articles, notes
+├── Drafts/                     # Your writing, organized by type
+│   ├── paper/                  #   papers/<ProjectName>/ → outline, plan, chapters
+│   ├── essay/                  #   same structure for essays
+│   └── post/                   #   same structure for blog posts
 ├── watch_inbox.ps1             # Background watcher daemon (optional)
 └── README.md
 ```
