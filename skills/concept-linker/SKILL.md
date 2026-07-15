@@ -24,5 +24,6 @@ concerns: [obsidian-markup]
 ## Phase 4: Output Execution
 1. Insert `[[wikilinks]]` around the matched terms in the file.
 2. Highlight all newly added links using `==[[LinkName]]==` syntax to allow visual verification in Obsidian.
-3. Overwrite the draft file with the updated links.
-4. Report a summary of the linked terms.
+3. Offer to write the updated links to a revised file `Drafts/[Name]_linked.md` or prompt the user for confirmation before overwriting the original file.
+4. Run the git safety check before overwriting to ensure any changes can be reverted.
+5. Report a summary of the linked terms.

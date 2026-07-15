@@ -215,9 +215,44 @@ You control how much Winnow does automatically.
 ### Level 1: Manual commands
 
 Type what you want done:
+
+**Ingest & Parse Literature:**
 ```powershell
-opencode run --agent winnow "Review Drafts/Chapter1.md for logical gaps"
-opencode run --agent winnow "Extract concepts from Sources/smith2024.md"
+# Convert double-column PDFs to Markdown notes (uses pdfplumber)
+opencode run --agent winnow "Convert Inbox/paper.pdf to Sources/paper_notes.md"
+
+# Query arXiv and auto-create literature cards
+opencode run --agent winnow "Pull papers about 'second-order cybernetics' from arXiv"
+```
+
+**Analyze & Draft:**
+```powershell
+# Shatter a monolithic note into atomic Concept notes
+opencode run --agent winnow "Extract concepts from Sources/smith2024.md using the atomic-shatterer skill"
+
+# Socratic peer review of a draft chapter
+opencode run --agent winnow "Review drafts/paper/tracing-the-scar/chapter-02.md for logical contradictions using the socratic-reviewer"
+```
+
+**Build Presentations:**
+```powershell
+# Draft a 15-minute conference slide deck in Marp format with speaker notes
+opencode run --agent winnow "Draft a 15-minute academic presentation for drafts/paper/tracing-the-scar/ using the presentation-writer skill"
+
+# Compile the Marp Markdown slides to a PDF deck
+opencode run --agent winnow "Compile presentation drafts/presentation/tracing-the-scar.md to drafts/presentation/slides.pdf using the marp_compiler tool"
+
+# Compile the Marp Markdown slides to an interactive HTML presentation
+opencode run --agent winnow "Compile presentation drafts/presentation/tracing-the-scar.md to drafts/presentation/slides.html using the marp_compiler tool"
+```
+
+**Wiki-Linking & Git Safety:**
+```powershell
+# Find and wrap unlinked terms in your drafts to link to your Concepts/ directory
+opencode run --agent winnow "Scan drafts/paper/tracing-the-scar/chapter-01.md for terms in Concepts/ and link them using the concept-linker skill"
+
+# Run a manual git safety commit to stage and commit outstanding changes
+opencode run --agent winnow "Stage and commit changes with safety message 'pre-shatter: smith2024' using the git_safety_commit tool"
 ```
 
 ### Level 2: Obsidian hotkeys

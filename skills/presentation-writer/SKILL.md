@@ -60,5 +60,5 @@ Under each slide, add an HTML comment block `<!-- -->` containing the speaker no
 - Hand off the generated slides and speaker notes to the `fuck-slop` skill. Remove all academic puffery, negative parallelisms, and rule-of-three list shapes. Ensure slide bullets are punchy and direct; avoid generic language.
 
 ## Phase 4: Output Execution
-- Save the slide deck file to `drafts/presentation/[ProjectName].md`. Create the `drafts/presentation/` folder if it is missing.
+- Save the slide deck file to `drafts/presentation/[ProjectName].md`. Create the `drafts/presentation/` folder if it is missing. If the file already exists, prompt the user for confirmation or write to `drafts/presentation/[ProjectName]_revised.md` instead of overwriting, and run the git safety check first.
 - Report the slide count, estimated presentation duration, word count of speaker notes, and instructions to render using Marp.

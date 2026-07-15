@@ -44,7 +44,7 @@ tags: [contextual-tag-1, contextual-tag-2]
    - `tags` are 1–3 domain-specific keywords (not the type itself).
 
 5. Scan all atomic notes for conceptual overlap. Insert `[[Wikilink]]` between notes where concepts cross-reference.
-6. Modify the original monolithic file: prepend a `## Table of Atomic Contents` section with bulleted links to **every** extracted note, grouped by category (Terms, People, Claims). The ToC must be exhaustive.
+6. Modify the original monolithic file: prepend a `## Table of Atomic Contents` section with bulleted links to **every** extracted note, grouped by category (Terms, People, Claims). The ToC must be exhaustive. Ensure that all original text of the monolithic file remains entirely intact beneath the Table of Atomic Contents; do not delete or shorten any part of the original source text.
 7. **Completeness verification**: Before finalizing, scan the source file a second time. Compare every named concept, person, and thesis against the extracted notes. If any were missed, extract them now. The atomic notes must account for everything of conceptual weight in the source.
 
 ## Phase 3: The F*ck Slop Pass
@@ -52,4 +52,4 @@ tags: [contextual-tag-1, contextual-tag-2]
 
 ## Phase 4: Output Execution
 - Save atomic notes to `Concepts/Terms/`, `Concepts/People/`, or `Concepts/Claims/` per classification.
-- Save the modified original file in place.
+- Save the modified original file in place, keeping the original content fully preserved.
