@@ -47,12 +47,20 @@ You don't need to be a programmer. If you can type a command in a terminal, you 
 
 ### 2. Add Winnow to your vault
 
+**For OpenCode setup:**
 ```powershell
 cd your-obsidian-vault
 git clone https://github.com/Ajasra/winnow.git .opencode
 ```
 
-Winnow is the `.opencode/` directory inside your vault. It does **not** include vault content — your notes live alongside it in `Concepts/`, `Sources/`, `Drafts/`, and `Inbox/`.
+**For Antigravity setup:**
+```powershell
+cd your-obsidian-vault
+git clone https://github.com/Ajasra/winnow.git .agents
+```
+
+Winnow is the configuration directory (`.opencode/` or `.agents/`) inside your vault. It does **not** include vault content — your notes live alongside it in `Concepts/`, `Sources/`, `Drafts/`, and `Inbox/`.
+
 
 ### 3. Set up your vault
 
