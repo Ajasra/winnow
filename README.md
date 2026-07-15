@@ -121,10 +121,12 @@ Winnow has two kinds of capabilities: **skills** (AI prompts that guide analysis
 | `socratic-reviewer` | Peer-reviews a draft with aggressive, constructive criticism | You need an outside perspective on your argument |
 | `literature-synthesizer` | Weaves multiple source notes into a thematic mini-review | You're writing a lit review or introduction |
 | `brain-dump-distiller` | Converts messy transcripts or raw notes into structured Obsidian files | You recorded a lecture or brainstormed ideas |
+| `concept-linker` | Scans drafts for unlinked key terms and inserts `[[wikilinks]]` | You want to auto-link your draft to your Concepts vault |
 | `comparative-matrix` | Builds a comparison table from multiple source files | You're surveying methods, frameworks, or studies |
 | `fact-grounder` | Checks every assertion in a draft against your sources | You want to verify nothing was invented or misremembered |
 | `mermaid-mapper` | Generates a Mermaid.js flowchart of dependencies or steps | You need a visual map of how concepts relate |
 | `popular-translator` | Rewrites academic text into clear, engaging language | You're sharing your work with a broader audience |
+| `presentation-writer` | Drafts a Marp Markdown slide deck with timed speaker notes | You need to prepare a talk (Academic, Public, Lightning) |
 | `metadata-harmonizer` | Parses raw files and adds standardized YAML frontmatter | Your notes have inconsistent or missing metadata |
 | `fuck-slop` | Strips AI-generated filler and polishes prose | You used AI to draft text and want it to sound human |
 | `drafting-pipeline` | Orchestrates the full writing lifecycle: scaffold, outline, draft, review, revise | You're starting a new paper, essay, or post |
@@ -137,8 +139,10 @@ Winnow has two kinds of capabilities: **skills** (AI prompts that guide analysis
 
 | Tool | What it does |
 |---|---|
-| `pdf_to_markdown` | Converts PDFs to clean Markdown using `pypdf` (auto-installed via `uv`) |
+| `pdf_to_markdown` | Converts PDFs to clean Markdown using `pdfplumber` for layout-aware column parsing (auto-installed via `uv`) |
 | `arxiv_puller` | Queries the arXiv API and generates Obsidian literature cards with YAML metadata |
+| `marp_compiler` | Compiles Marp slide decks into PDFs, HTML, or PowerPoint files using Marp CLI |
+| `git_safety_commit` | Stages and commits changed files to comply with Phase 0 safety protocol |
 
 ---
 

@@ -11,7 +11,9 @@
         "glob": true,
         "search_grep": true,
         "pdf_to_markdown": true,
-        "arxiv_puller": true
+        "arxiv_puller": true,
+        "marp_compiler": true,
+        "git_safety_commit": true
       }
     }
   }
