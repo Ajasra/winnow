@@ -48,6 +48,6 @@ concerns: [prose, citations]
 - Run `outline.md` and `plan.md` through the mechanical scan in `.opencode/skills/fuck-slop/references/tells.md`. Fix puffery, negative parallelisms, and hedged claims.
 
 ## Phase 4: Output Execution
-- Write `outline.md` to `drafts/<type>/<ProjectName>/outline.md` (overwrite stub).
-- Write `plan.md` to `drafts/<type>/<ProjectName>/plan.md` (overwrite stub).
+- Write `outline.md` to `drafts/<type>/<ProjectName>/outline.md`. If the file already exists and contains custom content beyond a basic stub, prompt the user for confirmation or write to `outline_revised.md` instead of overwriting. Run git safety check first.
+- Write `plan.md` to `drafts/<type>/<ProjectName>/plan.md`. If the file already exists and contains custom content beyond a basic stub, prompt the user for confirmation or write to `plan_revised.md` instead of overwriting. Run git safety check first.
 - Report: chapter count, source count, estimated word range.

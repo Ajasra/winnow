@@ -16,11 +16,11 @@ concerns: [prose]
 ## Phase 2: Processing
 1. Scan the text against all banned-word patterns listed in `.opencode/skills/fuck-slop/references/tells.md`. Replace every match with a concrete noun or verb.
 2. Convert every passive-voice sentence to active voice.
-3. Condense the draft: remove filler, merge redundant sentences, eliminate throat-clearing. Target word count ≤85% of the Phase 1 baseline.
+3. Condense the draft: remove filler, merge redundant sentences, eliminate throat-clearing. Target word count ≤85% of the Phase 1 baseline as a guideline for efficiency, but do not delete core assertions, factual examples, or citations to satisfy this target.
 4. Run the sentence-length variance check: no run of 3+ consecutive sentences within ±4 words of the same length.
 
 ## Phase 3: The F*ck Slop Pass
 - Run the edited output through the mechanical scan defined in `.opencode/skills/fuck-slop/references/tells.md`. Fix any new findings. Repeat until clean (max 3 passes).
 
 ## Phase 4: Output Execution
-- Overwrite the target file with the edited prose. Do not create a new file unless the user specifies one.
+- For version safety, save the updated draft as a revised file `Drafts/[Name]_resolved.md` or ask user preference on first run. Only overwrite the original file directly if explicitly instructed by the user and after verifying the git safety check has committed any uncommitted changes.

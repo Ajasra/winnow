@@ -52,7 +52,7 @@ Banned escape hatches (count as new findings): "less about X than Y", "X matters
 - No fake typos, forced slang, manufactured "voice".
 - Em dashes not banned. Density is the tell: max ~1 per 150 words, never two in one sentence.
 - Do not trade precision for personality in academic text.
-- Preserve the author's meaning exactly. Flag factual errors; do not silently fix.
+- Preserve the author's meaning exactly. Flag factual errors; do not silently fix. Preserve all citations, footnotes, and wikilinks (`[[LinkName]]`) exactly — never delete or alter them during rewriting.
 
 ### 2.3: Verify Loop
 Re-run the full Phase 2.1 scan on the rewritten text. Fix and re-scan until zero pattern hits and the cadence check passes. Cap at 4 passes. If a pattern survives 4 passes, rewrite that sentence from scratch starting from its bare claim.

@@ -73,7 +73,8 @@ For each consolidated concept note, write or rewrite in this exact section order
 ## Phase 5: Output — Write and Merge
 1. Write the consolidated note to its canonical path (e.g. `Concepts/Terms/scar.md`).
 2. For each duplicate identified in Phase 2:
-   - Verify the canonical note covers all content from the duplicate.
+   - Verify the canonical note covers all unique assertions, quotes, references, and metadata from the duplicate.
+   - For safety, create a backup copy of the duplicate file (e.g., append `.bak` to the filename: `[DuplicateName].md.bak`) or ensure that the git safety check has committed the original file before modifying it.
    - Rewrite the duplicate to a redirect stub:
 
    ```markdown

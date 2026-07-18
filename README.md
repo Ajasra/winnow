@@ -47,12 +47,20 @@ You don't need to be a programmer. If you can type a command in a terminal, you 
 
 ### 2. Add Winnow to your vault
 
+**For OpenCode setup:**
 ```powershell
 cd your-obsidian-vault
 git clone https://github.com/Ajasra/winnow.git .opencode
 ```
 
-Winnow is the `.opencode/` directory inside your vault. It does **not** include vault content — your notes live alongside it in `Concepts/`, `Sources/`, `Drafts/`, and `Inbox/`.
+**For Antigravity setup:**
+```powershell
+cd your-obsidian-vault
+git clone https://github.com/Ajasra/winnow.git .agents
+```
+
+Winnow is the configuration directory (`.opencode/` or `.agents/`) inside your vault. It does **not** include vault content — your notes live alongside it in `Concepts/`, `Sources/`, `Drafts/`, and `Inbox/`.
+
 
 ### 3. Set up your vault
 
@@ -113,10 +121,12 @@ Winnow has two kinds of capabilities: **skills** (AI prompts that guide analysis
 | `socratic-reviewer` | Peer-reviews a draft with aggressive, constructive criticism | You need an outside perspective on your argument |
 | `literature-synthesizer` | Weaves multiple source notes into a thematic mini-review | You're writing a lit review or introduction |
 | `brain-dump-distiller` | Converts messy transcripts or raw notes into structured Obsidian files | You recorded a lecture or brainstormed ideas |
+| `concept-linker` | Scans drafts for unlinked key terms and inserts `[[wikilinks]]` | You want to auto-link your draft to your Concepts vault |
 | `comparative-matrix` | Builds a comparison table from multiple source files | You're surveying methods, frameworks, or studies |
 | `fact-grounder` | Checks every assertion in a draft against your sources | You want to verify nothing was invented or misremembered |
 | `mermaid-mapper` | Generates a Mermaid.js flowchart of dependencies or steps | You need a visual map of how concepts relate |
 | `popular-translator` | Rewrites academic text into clear, engaging language | You're sharing your work with a broader audience |
+| `presentation-writer` | Drafts a Marp Markdown slide deck with timed speaker notes | You need to prepare a talk (Academic, Public, Lightning) |
 | `metadata-harmonizer` | Parses raw files and adds standardized YAML frontmatter | Your notes have inconsistent or missing metadata |
 | `fuck-slop` | Strips AI-generated filler and polishes prose | You used AI to draft text and want it to sound human |
 | `drafting-pipeline` | Orchestrates the full writing lifecycle: scaffold, outline, draft, review, revise | You're starting a new paper, essay, or post |
@@ -129,8 +139,10 @@ Winnow has two kinds of capabilities: **skills** (AI prompts that guide analysis
 
 | Tool | What it does |
 |---|---|
-| `pdf_to_markdown` | Converts PDFs to clean Markdown using `pypdf` (auto-installed via `uv`) |
+| `pdf_to_markdown` | Converts PDFs to clean Markdown using `pdfplumber` for layout-aware column parsing (auto-installed via `uv`) |
 | `arxiv_puller` | Queries the arXiv API and generates Obsidian literature cards with YAML metadata |
+| `marp_compiler` | Compiles Marp slide decks into PDFs, HTML, or PowerPoint files using Marp CLI |
+| `git_safety_commit` | Stages and commits changed files to comply with Phase 0 safety protocol |
 
 ---
 
@@ -203,9 +215,44 @@ You control how much Winnow does automatically.
 ### Level 1: Manual commands
 
 Type what you want done:
+
+**Ingest & Parse Literature:**
 ```powershell
-opencode run --agent winnow "Review Drafts/Chapter1.md for logical gaps"
-opencode run --agent winnow "Extract concepts from Sources/smith2024.md"
+# Convert double-column PDFs to Markdown notes (uses pdfplumber)
+opencode run --agent winnow "Convert Inbox/paper.pdf to Sources/paper_notes.md"
+
+# Query arXiv and auto-create literature cards
+opencode run --agent winnow "Pull papers about 'second-order cybernetics' from arXiv"
+```
+
+**Analyze & Draft:**
+```powershell
+# Shatter a monolithic note into atomic Concept notes
+opencode run --agent winnow "Extract concepts from Sources/smith2024.md using the atomic-shatterer skill"
+
+# Socratic peer review of a draft chapter
+opencode run --agent winnow "Review drafts/paper/tracing-the-scar/chapter-02.md for logical contradictions using the socratic-reviewer"
+```
+
+**Build Presentations:**
+```powershell
+# Draft a 15-minute conference slide deck in Marp format with speaker notes
+opencode run --agent winnow "Draft a 15-minute academic presentation for drafts/paper/tracing-the-scar/ using the presentation-writer skill"
+
+# Compile the Marp Markdown slides to a PDF deck
+opencode run --agent winnow "Compile presentation drafts/presentation/tracing-the-scar.md to drafts/presentation/slides.pdf using the marp_compiler tool"
+
+# Compile the Marp Markdown slides to an interactive HTML presentation
+opencode run --agent winnow "Compile presentation drafts/presentation/tracing-the-scar.md to drafts/presentation/slides.html using the marp_compiler tool"
+```
+
+**Wiki-Linking & Git Safety:**
+```powershell
+# Find and wrap unlinked terms in your drafts to link to your Concepts/ directory
+opencode run --agent winnow "Scan drafts/paper/tracing-the-scar/chapter-01.md for terms in Concepts/ and link them using the concept-linker skill"
+
+# Run a manual git safety commit to stage and commit outstanding changes
+opencode run --agent winnow "Stage and commit changes with safety message 'pre-shatter: smith2024' using the git_safety_commit tool"
 ```
 
 ### Level 2: Obsidian hotkeys
